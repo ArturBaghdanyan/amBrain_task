@@ -1,12 +1,13 @@
 .form {
-  width: 400px;
+  width: 280px;
   height: auto;
   display: flex;
   flex-direction: column;
   row-gap: 20px;
-  border: 1px solid black;
+  border: 1px solid gray;
   padding: 20px 0;
   margin: 20px auto;
+  border-radius: 5px;
 
   &_input {
     display: flex;
@@ -19,12 +20,14 @@
       height: 30px;
     }
   }
-  > button {
-    width: 120px;
-    height: 40px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    margin: 0 auto;
-  }
+}
+button {
+  width: 120px;
+  height: 30px;
+  border: none;
+  border-radius: 12px;
+  font-family: "Poppins", serif;
+  font-size: 13px;
+  cursor: pointer;
+  margin: 0 auto;
 }

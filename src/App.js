@@ -1,6 +1,5 @@
-import './App.css';
-import Modal from "./components/addColumn";
-import TableList from "./components";
+import Modal from "./components/modal";
+import TableList from "./components/table-list";
 import { useState, useEffect } from "react";
 import {useNavigate} from "react-router";
 

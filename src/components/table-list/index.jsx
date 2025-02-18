@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import style from "./style.module.scss";
-import {EditItemModal} from "./edit-modal/editModal";
+import {EditItemModal} from "../edit-modal/editModal";
 import { v4 as uuidv4 } from 'uuid';
-import {handleDragOver, handleDragStart, handleDrop} from "../DnD/dnd";
+import {handleDragOver, handleDragStart, handleDrop} from "../../DnD/dnd";
+import {AddNewtables} from "../addNewTables/addNewtables";
+import {Buttons} from "./buttons";
 
 const TableList = () => {
   const [addItem, setAddItem] = useState([]);
@@ -22,29 +24,33 @@ const TableList = () => {
   const savedItems = () => {
     const savedTables = localStorage.getItem("savedTables");
 
-    if(savedTables) {
-      setAddItem(JSON.parse(savedTables))
-    } else {
-
-      const rawItems = localStorage.getItem("restaurantKeys") || "{}";
-      const {numTables, numChairs} = JSON.parse(rawItems);
-
-      if (!numTables || !numChairs) {
-        const savedTables = localStorage.getItem("savedTables");
-        console.log(savedTables)
-      }
-
-      const tables = [];
-      for (let i = 0; i < numTables; i++) {
-        let table = {chairs: []};
-        for (let j = 0; j < numChairs; j++) {
-          table.chairs.push({id: uuidv4(), name: ""});
-        }
-        tables.push(table);
-      }
-      setAddItem(tables);
+    if (savedTables) {
+      setAddItem(JSON.parse(savedTables));
+      return;  // Exit early if tables exist in localStorage
     }
-  }
+
+    const rawItems = localStorage.getItem("restaurantKeys");
+
+    if (!rawItems) {
+      setAddItem([]); // Clear table list if there's no data
+      return;
+    }
+
+    const { numTables, numChairs } = JSON.parse(rawItems);
+
+    if (!numTables || !numChairs) {
+      setAddItem([]); // Ensure no undefined behavior
+      return;
+    }
+
+    const tables = Array.from({ length: numTables }, () => ({
+      chairs: Array.from({ length: numChairs }, () => ({ id: uuidv4(), name: "" })),
+    }));
+
+    setAddItem(tables);
+    localStorage.setItem("savedTables", JSON.stringify(tables));
+  };
+
 
   useEffect(() => {
     savedItems()
@@ -57,38 +63,47 @@ const TableList = () => {
   }, [addItem])
 
 
+
   return (
     <>
       <div className={style.list}>
         {addItem.length === 0 ? (
           <p>No tables to display.</p>
         ) : (
-          addItem.map((table, tableIndex) => (
-            <div key={tableIndex} className={style.list_items}>
+          <div className={style.list_first}>
+            {addItem.map((table, tableIndex) => (
+            <div key={tableIndex} className={style.list_first_items}>
               <h3>Table {tableIndex + 1}</h3>
               <p>Number of chairs: {table.chairs.length}</p>
-              <div className={style.list_items_chairs}>
+              <div className={style.list_first_items_chairs}>
                 {table.chairs.map((chair, chairIndex) => (
                   <div
                     key={chair.id}
                     className={style.chair}
-                    draggable
-                    onDragStart={(event) => handleDragStart(event, tableIndex, chairIndex)}
-                    onDragOver={handleDragOver}
                     onClick={() => onShowModal(tableIndex, chairIndex)}
-                    onDrop={(event) =>
-                      handleDrop({ addItem, setAddItem }, event, tableIndex, chairIndex)}
-
                   >
-                    {chairIndex + 1}: {chair.name}
+                    <span
+                      draggable
+                      onDragStart={(event) =>
+                        handleDragStart(event, tableIndex, chairIndex)}
+                      onDragOver={handleDragOver}
+                      onDrop={(event) =>
+                      handleDrop({ addItem, setAddItem }, event, tableIndex, chairIndex)}
+                    >
+                      {chairIndex + 1}:
+                    </span>
+                    <span>{chair.name}</span>
                   </div>
                 ))}
               </div>
             </div>
-          ))
+          ))}
+          </div>
         )}
+        <Buttons addItem={addItem} setAddItem={setAddItem} />
 
-    </div>
+      </div>
+
       <EditItemModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
@@ -99,7 +114,7 @@ const TableList = () => {
         setAddItem={setAddItem}
         chairName={chairName}
       />
-  </>
+    </>
   );
 };
 

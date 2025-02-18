@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat+Subrayada:wght@400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Vesper+Libre:wght@400;500;700;900&family=Zen+Kaku+Gothic+Antique&display=swap');
+
+.list {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 15px;
+  margin-top: 20px;
+
+  &_first {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    &_items {
+      display: flex;
+      flex-direction: column;
+      row-gap: 20px;
+      border: 1px solid red;
+      padding: 5px;
+
+      &_chairs {
+        display: flex;
+        flex-direction: column;
+
+        > .chair {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 15px;
+
+  &_item {
+    display: flex;
+    justify-content: end;
+    column-gap: 15px;
+  }
+}
+
+
+.addModal {
+  width: 280px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  border: 1px solid gray;
+  padding: 20px 0;
+  margin: 20px auto;
+  border-radius: 5px;
+
+  &_input {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    margin: 0 auto;
+
+    > input {
+      width: 100%;
+      height: 30px;
+    }
+  }
+}
+
