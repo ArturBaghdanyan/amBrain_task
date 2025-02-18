@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import style from "./style.module.scss";
 import {EditItemModal} from "./edit-modal/editModal";
 import { v4 as uuidv4 } from 'uuid';
+import {handleDragOver, handleDragStart, handleDrop} from "../DnD/dnd";
 
 const TableList = () => {
   const [addItem, setAddItem] = useState([]);
@@ -19,16 +19,20 @@ const TableList = () => {
     setIsModalVisible(true);
   };
 
-  useEffect(() => {
+  const savedItems = () => {
     const savedTables = localStorage.getItem("savedTables");
 
     if(savedTables) {
       setAddItem(JSON.parse(savedTables))
     } else {
+
       const rawItems = localStorage.getItem("restaurantKeys") || "{}";
       const {numTables, numChairs} = JSON.parse(rawItems);
 
-      if (!numTables || !numChairs) return;
+      if (!numTables || !numChairs) {
+        const savedTables = localStorage.getItem("savedTables");
+        console.log(savedTables)
+      }
 
       const tables = [];
       for (let i = 0; i < numTables; i++) {
@@ -40,6 +44,10 @@ const TableList = () => {
       }
       setAddItem(tables);
     }
+  }
+
+  useEffect(() => {
+    savedItems()
   }, []);
 
   useEffect(() => {
@@ -48,34 +56,7 @@ const TableList = () => {
     }
   }, [addItem])
 
-  const handleDragStart = (event, tableIndex, chairIndex) => {
-    event.dataTransfer.setData("tableIndex", tableIndex);
-    event.dataTransfer.setData("chairIndex", chairIndex);
-  };
 
-  const handleDragOver = (event) => {
-    event.preventDefault();
-  };
-
-  const handleDrop = (event, targetTableIndex, targetChairIndex) => {
-    event.preventDefault();
-
-    const sourceTableIndex = parseInt(event.dataTransfer.getData("tableIndex"));
-    const sourceChairIndex = parseInt(event.dataTransfer.getData("chairIndex"));
-
-    if (isNaN(sourceTableIndex) || isNaN(sourceChairIndex)) return;
-
-    if (sourceTableIndex === targetTableIndex && sourceChairIndex === targetChairIndex) return;
-
-    const updatedTables = [...addItem];
-
-    // Remove chair from source table
-    const tempChair = updatedTables[targetTableIndex].chairs[targetChairIndex];
-    updatedTables[targetTableIndex].chairs[targetChairIndex] = updatedTables[sourceTableIndex].chairs[sourceChairIndex];
-    updatedTables[sourceTableIndex].chairs[sourceChairIndex] = tempChair;
-
-    setAddItem(updatedTables);
-  };
   return (
     <>
       <div className={style.list}>
@@ -95,7 +76,9 @@ const TableList = () => {
                     onDragStart={(event) => handleDragStart(event, tableIndex, chairIndex)}
                     onDragOver={handleDragOver}
                     onClick={() => onShowModal(tableIndex, chairIndex)}
-                    onDrop={(event) => handleDrop(event, tableIndex, chairIndex)}
+                    onDrop={(event) =>
+                      handleDrop({ addItem, setAddItem }, event, tableIndex, chairIndex)}
+
                   >
                     {chairIndex + 1}: {chair.name}
                   </div>
