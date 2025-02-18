@@ -60,28 +60,22 @@ const TableList = () => {
   const handleDrop = (event, targetTableIndex, targetChairIndex) => {
     event.preventDefault();
 
-    const sourceTableIndex = event.dataTransfer.getData("tableIndex");
-    const sourceChairIndex = event.dataTransfer.getData("chairIndex");
+    const sourceTableIndex = parseInt(event.dataTransfer.getData("tableIndex"));
+    const sourceChairIndex = parseInt(event.dataTransfer.getData("chairIndex"));
 
-    if (
-      sourceTableIndex === "" ||
-      sourceChairIndex === "" ||
-      (sourceTableIndex === targetTableIndex && sourceChairIndex === targetChairIndex)
-    ) {
-      return;
-    }
+    if (isNaN(sourceTableIndex) || isNaN(sourceChairIndex)) return;
+
+    if (sourceTableIndex === targetTableIndex && sourceChairIndex === targetChairIndex) return;
 
     const updatedTables = [...addItem];
 
     // Remove chair from source table
-    const [movedChair] = updatedTables[sourceTableIndex].chairs.splice(sourceChairIndex, 1);
-
-    // Insert chair into target table at the specified index
-    updatedTables[targetTableIndex].chairs.splice(targetChairIndex, 0, movedChair);
+    const tempChair = updatedTables[targetTableIndex].chairs[targetChairIndex];
+    updatedTables[targetTableIndex].chairs[targetChairIndex] = updatedTables[sourceTableIndex].chairs[sourceChairIndex];
+    updatedTables[sourceTableIndex].chairs[sourceChairIndex] = tempChair;
 
     setAddItem(updatedTables);
   };
-
   return (
     <>
       <div className={style.list}>
