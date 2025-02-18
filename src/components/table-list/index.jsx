@@ -3,7 +3,6 @@ import style from "./style.module.scss";
 import {EditItemModal} from "../edit-modal/editModal";
 import { v4 as uuidv4 } from 'uuid';
 import {handleDragOver, handleDragStart, handleDrop} from "../../DnD/dnd";
-import {AddNewtables} from "../addNewTables/addNewtables";
 import {Buttons} from "./buttons";
 
 const TableList = () => {
@@ -26,13 +25,13 @@ const TableList = () => {
 
     if (savedTables) {
       setAddItem(JSON.parse(savedTables));
-      return;  // Exit early if tables exist in localStorage
+      return;
     }
 
     const rawItems = localStorage.getItem("restaurantKeys");
 
     if (!rawItems) {
-      setAddItem([]); // Clear table list if there's no data
+      setAddItem([]);
       return;
     }
 

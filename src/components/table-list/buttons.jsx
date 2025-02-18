@@ -1,7 +1,7 @@
 import style from "./style.module.scss";
-import {AddNewtables} from "../addNewTables/addNewtables";
+import {AddNewTables} from "../addNewTables/addNewTables";
 import {useState} from "react";
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 export const Buttons = ({addItem, setAddItem}) => {
   const [showTableModal, setShowTableModal] = useState(false)
@@ -13,11 +13,16 @@ export const Buttons = ({addItem, setAddItem}) => {
   function onChairShow() {
     setShowChairModal(true)
   }
-  const addNewTables = (numTables) => {
+
+  const addNewTables = (numTables, numChairs) => {
     const newTables = [];
 
     for (let i = 0; i < numTables; i++) {
       let table = { chairs: [] };
+
+      for (let j = 0; j < numChairs; j++) {
+        table.chairs.push({ id: uuidv4(), name: "" });
+      }
 
       newTables.push(table);
     }
@@ -34,7 +39,12 @@ export const Buttons = ({addItem, setAddItem}) => {
         <button onClick={onTableShow}>Add table</button>
         <button onClick={onChairShow}>Update chairs</button>
       </div>
-      {showTableModal && <AddNewtables addNewTables={addNewTables} setShowModal={setShowTableModal} />}
+      {showTableModal &&
+        <AddNewTables
+          addItem={addItem}
+          addNewTables={addNewTables}
+          setShowModal={setShowTableModal}
+        />}
     </div>
   )
 }

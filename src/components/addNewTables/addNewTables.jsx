@@ -1,15 +1,15 @@
 import style from "../../repeated.module.scss";
 import {useState} from "react";
 
-export const AddNewtables = ({addNewTables, setShowModal}) => {
+export const AddNewTables = ({addItem, addNewTables, setShowModal}) => {
   const [numTables, setNumTables] = useState("");
-
 
   const addItems = (e) => {
     e.preventDefault();
 
     if (numTables > 0) {
-      addNewTables(parseInt(numTables));
+      const existingChairCount = addItem.length > 0 ? addItem[0].chairs.length : null;
+      addNewTables(parseInt(numTables), existingChairCount);
       setShowModal(false);
     }
   };
