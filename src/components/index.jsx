@@ -10,6 +10,8 @@ const TableList = () => {
   const [selectedChairIndex, setSelectedChairIndex] = useState(null);
   const [selectedTableIndex, setSelectedTableIndex] = useState(null);
   const [chairName, setChairName] = useState(null);
+  const [draggedSpecName, setDraggedSpecName] = useState("");
+  const [specName, setSpecName] = useState('')
 
   const onShowModal = (tableIndex, chairIndex) => {
     setSelectedTableIndex(tableIndex);
@@ -20,36 +22,92 @@ const TableList = () => {
   };
 
   useEffect(() => {
-    const rawItems = localStorage.getItem("items") || "{}";
-    const { input1, input2 } = JSON.parse(rawItems);
+    const savedTables = localStorage.getItem("savedTables");
 
-    const tables = [];
-    for (let i = 0; i < input1; i++) {
-      let table = { chairs: [] };
-      for (let j = 0; j < input2; j++) {
-        table.chairs.push({ id: uuidv4(), name: "" });
+    if(savedTables) {
+      setAddItem(JSON.parse(savedTables))
+    } else {
+      const rawItems = localStorage.getItem("restaurantKeys") || "{}";
+      const {numTables, numChairs} = JSON.parse(rawItems);
+
+      if (!numTables || !numChairs) return;
+
+      const tables = [];
+      for (let i = 0; i < numTables; i++) {
+        let table = {chairs: []};
+        for (let j = 0; j < numChairs; j++) {
+          table.chairs.push({id: uuidv4(), name: ""});
+        }
+        tables.push(table);
       }
-      tables.push(table);
+      setAddItem(tables);
     }
-
-    setAddItem(tables);
   }, []);
 
-  const onDragEnd = (result) => {
-    const { destination, source } = result;
+  useEffect(() => {
+    if(addItem.length > 0) {
+      localStorage.setItem('savedTables', JSON.stringify(addItem));
+    }
+  }, [addItem])
 
-    if (!destination) return;
 
-    if (source.index === destination.index && source.droppableId === destination.droppableId) {
+  // const onDragEnd = (result) => {
+  //   const { destination, source } = result;
+  //
+  //   // If dropped outside a valid droppable area, do nothing
+  //   if (!destination) return;
+  //
+  //   // If item is dropped in the same position, do nothing
+  //   if (source.index === destination.index && source.droppableId === destination.droppableId) {
+  //     return;
+  //   }
+  //
+  //   const srcTableIndex = parseInt(source.droppableId);
+  //   const destTableIndex = parseInt(destination.droppableId);
+  //
+  //   // Clone tables to modify state immutably
+  //   const updatedTables = [...addItem];
+  //
+  //   // Extract chair being moved
+  //   const [movedChair] = updatedTables[srcTableIndex].chairs.splice(source.index, 1);
+  //
+  //   // Insert chair into the destination table at the correct index
+  //   updatedTables[destTableIndex].chairs.splice(destination.index, 0, movedChair);
+  //
+  //   // Update state
+  //   setAddItem(updatedTables);
+  // };
+
+  const handleDragStart = (event, tableIndex, chairIndex) => {
+    event.dataTransfer.setData("tableIndex", tableIndex);
+    event.dataTransfer.setData("chairIndex", chairIndex);
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event, targetTableIndex, targetChairIndex) => {
+    event.preventDefault();
+
+    const sourceTableIndex = event.dataTransfer.getData("tableIndex");
+    const sourceChairIndex = event.dataTransfer.getData("chairIndex");
+
+    if (
+      sourceTableIndex === "" ||
+      sourceChairIndex === "" ||
+      (sourceTableIndex === targetTableIndex && sourceChairIndex === targetChairIndex)
+    ) {
       return;
     }
 
-    const srcTableIndex = parseInt(source.droppableId);
-    const destTableIndex = parseInt(destination.droppableId);
     const updatedTables = [...addItem];
 
-    const [movedChair] = updatedTables[srcTableIndex].chairs.splice(source.index, 1);
-    updatedTables[destTableIndex].chairs.splice(destination.index, 0, movedChair);
+    // Remove chair from source table
+    const [movedChair] = updatedTables[sourceTableIndex].chairs.splice(sourceChairIndex, 1);
+
+    // Insert chair into target table at the specified index
+    updatedTables[targetTableIndex].chairs.splice(targetChairIndex, 0, movedChair);
 
     setAddItem(updatedTables);
   };
@@ -57,45 +115,30 @@ const TableList = () => {
   return (
     <>
       <div className={style.list}>
-      {addItem.length === 0 ? (
-        <p>No tables to display.</p>
-      ) : (
-        <DragDropContext onDragEnd={onDragEnd}>
-          {addItem.map((table, tableIndex) => (
-            <Droppable key={tableIndex} droppableId={tableIndex.toString()} type="chair">
-              {(provided) => (
-                <div className={style.list_items} ref={provided.innerRef} {...provided.dragHandleProps}
-                     {...provided.droppableProps}>
-                  <h3>Table {tableIndex + 1}</h3>
-                  <p>Number of chairs: {table.chairs.length}</p>
-                  <div className={style.list_items_chairs} ref={provided.innerRef}>
-                    {table.chairs.map((chair, chairIndex) => (
-                      <Draggable
-                        key={chair.id}
-                        draggableId={chair.id}
-                        index={chairIndex}
-                      >
-                        {(provided) => (
-                          <div
-                            className={style.chair}
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            onClick={() => onShowModal(tableIndex, chairIndex)}
-                          >
-                            {chairIndex + 1}: {chair.name}
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
+        {addItem.length === 0 ? (
+          <p>No tables to display.</p>
+        ) : (
+          addItem.map((table, tableIndex) => (
+            <div key={tableIndex} className={style.list_items}>
+              <h3>Table {tableIndex + 1}</h3>
+              <p>Number of chairs: {table.chairs.length}</p>
+              <div className={style.list_items_chairs}>
+                {table.chairs.map((chair, chairIndex) => (
+                  <div
+                    key={chair.id}
+                    className={style.chair}
+                    draggable
+                    onDragStart={(event) => handleDragStart(event, tableIndex, chairIndex)}
+                    onDragOver={handleDragOver}
+                    onDrop={(event) => handleDrop(event, tableIndex, chairIndex)}
+                  >
+                    {chairIndex + 1}: {chair.name}
                   </div>
-                </div>
-              )}
-            </Droppable>
-          ))}
-        </DragDropContext>
-      )}
+                ))}
+              </div>
+            </div>
+          ))
+        )}
 
     </div>
       <EditItemModal
