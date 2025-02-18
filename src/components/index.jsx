@@ -10,8 +10,6 @@ const TableList = () => {
   const [selectedChairIndex, setSelectedChairIndex] = useState(null);
   const [selectedTableIndex, setSelectedTableIndex] = useState(null);
   const [chairName, setChairName] = useState(null);
-  const [draggedSpecName, setDraggedSpecName] = useState("");
-  const [specName, setSpecName] = useState('')
 
   const onShowModal = (tableIndex, chairIndex) => {
     setSelectedTableIndex(tableIndex);
@@ -49,34 +47,6 @@ const TableList = () => {
       localStorage.setItem('savedTables', JSON.stringify(addItem));
     }
   }, [addItem])
-
-
-  // const onDragEnd = (result) => {
-  //   const { destination, source } = result;
-  //
-  //   // If dropped outside a valid droppable area, do nothing
-  //   if (!destination) return;
-  //
-  //   // If item is dropped in the same position, do nothing
-  //   if (source.index === destination.index && source.droppableId === destination.droppableId) {
-  //     return;
-  //   }
-  //
-  //   const srcTableIndex = parseInt(source.droppableId);
-  //   const destTableIndex = parseInt(destination.droppableId);
-  //
-  //   // Clone tables to modify state immutably
-  //   const updatedTables = [...addItem];
-  //
-  //   // Extract chair being moved
-  //   const [movedChair] = updatedTables[srcTableIndex].chairs.splice(source.index, 1);
-  //
-  //   // Insert chair into the destination table at the correct index
-  //   updatedTables[destTableIndex].chairs.splice(destination.index, 0, movedChair);
-  //
-  //   // Update state
-  //   setAddItem(updatedTables);
-  // };
 
   const handleDragStart = (event, tableIndex, chairIndex) => {
     event.dataTransfer.setData("tableIndex", tableIndex);
@@ -130,6 +100,7 @@ const TableList = () => {
                     draggable
                     onDragStart={(event) => handleDragStart(event, tableIndex, chairIndex)}
                     onDragOver={handleDragOver}
+                    onClick={() => onShowModal(tableIndex, chairIndex)}
                     onDrop={(event) => handleDrop(event, tableIndex, chairIndex)}
                   >
                     {chairIndex + 1}: {chair.name}
