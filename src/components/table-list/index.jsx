@@ -72,10 +72,12 @@ const TableList = () => {
           <div className={style.list_first}>
             {addItem.map((table, tableIndex) => (
             <div key={tableIndex} className={style.list_first_items}>
-              <h3>Table {tableIndex + 1}</h3>
-              <p>Number of chairs: {table.chairs.length}</p>
+              <div className={style.list_first_items_title}>
+                <h3>Table {tableIndex + 1}</h3>
+                <p>Number of chairs: {table.chairs.length}</p>
+              </div>
               <div className={style.list_first_items_chairs}>
-                {table.chairs.map((chair, chairIndex) => (
+              {table.chairs.map((chair, chairIndex) => (
                   <div
                     key={chair.id}
                     className={style.chair}

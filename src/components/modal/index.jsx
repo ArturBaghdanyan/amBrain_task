@@ -5,7 +5,6 @@ const Modal = () => {
   const [numTables, setNumTables] = useState("");
   const [numChairs, setNumChairs] = useState("");
 
-
   const createItems = (e) => {
     e.preventDefault();
     const result = { numTables, numChairs };
@@ -17,7 +16,7 @@ const Modal = () => {
   };
 
   return (
-    <form className={styles.form} >
+    <form className={styles.form}>
       <div className={styles.form_input}>
         <input
           type="number"

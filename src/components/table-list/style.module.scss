@@ -4,7 +4,7 @@
   width: 100%;
   height: auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   column-gap: 15px;
   margin-top: 20px;
 
@@ -20,6 +20,20 @@
       border: 1px solid red;
       padding: 5px;
 
+      &_title {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+
+        > h3 {
+          margin: 0;
+          border-bottom: 1px solid;
+        }
+
+        > p {
+          margin: 0;
+        }
+      }
       &_chairs {
         display: flex;
         flex-direction: column;
