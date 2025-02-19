@@ -1,36 +1,21 @@
 import Modal from "./components/modal";
 import TableList from "./components/table-list";
-import { useState, useEffect } from "react";
-import {useNavigate} from "react-router";
-
-// function App() {
-//   const [hasSavedTables, setHasSavedTables] = useState(false);
-//
-//   // Check localStorage for savedTables when the app loads
-//   useEffect(() => {
-//     const savedTables = localStorage.getItem("savedTables");
-//     if (savedTables) {
-//       setHasSavedTables(true);
-//     }
-//   }, []);
-//
-//   return hasSavedTables ? <TableList setHasSavedTables={setHasSavedTables} /> : <Modal />;
-// }
-
-// export default App;
+import {useContext, useEffect} from "react";
+import {RestaurantContext} from "./context/RestaurantContext";
+import {useNavigate} from "react-router-dom";
 
 function App() {
-  const [hasSavedTables, setHasSavedTables] = useState(false);
+  const {hasSavedTables} = useContext(RestaurantContext)
   const navigate = useNavigate()
 
-  // Check localStorage for() savedTables when the app loads
   useEffect(() => {
-    const savedTables = localStorage.getItem("savedTables");
-    if (savedTables) {
-      navigate('/table-list')
-      setHasSavedTables(true);
+    if (hasSavedTables) {
+      navigate("/table-list");
     }
-  }, []);
+    else {
+      navigate("/");
+    }
+  }, [hasSavedTables, navigate]);
 
   return hasSavedTables ? <TableList /> : <Modal />;
 }

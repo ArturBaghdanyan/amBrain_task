@@ -1,22 +1,24 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import style from "./style.module.scss"
-export const EditItemModal = ({
-                                isModalVisible,
-                                setIsModalVisible,
-                                setSelectedChairIndex,
-                                selectedTableIndex,
-                                selectedChairIndex,
-                                addItem,
-                                setAddItem,
-                                chairName,
-                              }) => {
-  const [name, setName] = useState(chairName);
+import {RestaurantContext} from "../../context/RestaurantContext";
 
+export const EditItemModal = () => {
+  const {
+    isModalVisible,
+    setIsModalVisible,
+    setSelectedChairIndex,
+    selectedTableIndex,
+    selectedChairIndex,
+    addItem,
+    setAddItem,
+    chairName
+  } = useContext(RestaurantContext);
+
+  const [name, setName] = useState(chairName);
 
 
   useEffect(() => {
     setName(chairName);
-
   }, [isModalVisible, chairName]);
 
   const onCloseModal = () => {
@@ -60,7 +62,6 @@ export const EditItemModal = ({
       <div style={{ width: '300px', margin: '0 auto', marginTop: '50px' }}>
         <form onSubmit={handleSubmit} className={style.changeItem}>
           <input
-            id="name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}

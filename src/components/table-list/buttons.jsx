@@ -1,13 +1,15 @@
 import style from "./style.module.scss";
 import {AddNewTables} from "../addNewTables/addNewTables";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import { v4 as uuidv4 } from 'uuid';
 import {UpdateChair} from "../updateChairs/updateChair";
+import {RestaurantContext} from "../../context/RestaurantContext";
 
-export const Buttons = ({addItem, setAddItem}) => {
+export const Buttons = () => {
+  const { addItem, setAddItem } = useContext(RestaurantContext);
+
   const [showTableModal, setShowTableModal] = useState(false)
   const [showChairModal, setShowChairModal] = useState(false)
-
   function onTableShow() {
     setShowTableModal(true)
   }

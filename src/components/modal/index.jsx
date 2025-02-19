@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import {useState} from 'react';
 import styles from '../../repeated.module.scss';
 
 const Modal = () => {
@@ -21,12 +21,18 @@ const Modal = () => {
         <input
           type="number"
           value={numTables}
-          onChange={(e) => setNumTables(e.target.value)}
+          onChange={(e) => {
+            const value = parseInt(e.target.value, 10)
+            setNumTables(value > 0 ? value : '')
+          }}
         />
         <input
           type="number"
           value={numChairs}
-          onChange={(e) => setNumChairs(e.target.value)}
+          onChange={(e) => {
+            const value = parseInt(e.target.value, 10)
+            setNumChairs(value > 0 ? value : '')
+          }}
         />
       </div>
       <button onClick={createItems}>Create list</button>

@@ -14,45 +14,65 @@
     gap: 20px;
 
     &_items {
-      display: flex;
-      flex-direction: column;
-      row-gap: 20px;
       border: 1px solid red;
-      padding: 5px;
 
-      &_title {
+      &_column {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        row-gap: 10px;
-        padding: 3px 0;
-        border-bottom: 1px solid;
+        flex-direction: column;
+        row-gap: 20px;
 
-        > h3 {
-          margin: 0;
-        }
-        &_button {
-          border-radius: 20px;
-          width: 25px;
-          height: 25px;
-          background-color: lightblue;
+        &_title {
+          display: flex;
+          flex-direction: column;
+          row-gap: 10px;
+          padding: 5px 0;
 
-          > span {
+          &_row {
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            margin: 0 auto;
+
+          &_border {
+            border-bottom: 1px solid black;
+            width: 100%;
+            height: 1px;
+          }
+
+          > h3 {
+            margin: 0;
+          }
+
+          &_button {
+            border-radius: 20px;
+            width: 25px;
+            height: 25px;
+            background-color: lightblue;
+
+            > span {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              cursor: pointer;
+            }
           }
         }
       }
-      > p {
-        margin: 0;
-      }
-      &_chairs {
-        display: flex;
-        flex-direction: column;
 
-        > .chair {
-          cursor: pointer;
+        &_chairs {
+          display: flex;
+          flex-direction: column;
+          row-gap: 15px;
+          padding: 0 10px;
+
+          > p {
+            margin: 0;
+          }
+
+          > .chair {
+            cursor: pointer;
+          }
         }
       }
     }
@@ -97,3 +117,9 @@
   }
 }
 
+a {
+  position: fixed;
+  bottom: 10px;
+  text-decoration: none;
+  color: #e71835;
+}
