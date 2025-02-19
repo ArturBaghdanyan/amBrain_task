@@ -60,7 +60,6 @@ export const Buttons = () => {
     }
   };
 
-
   const addNewTables = (numTables, numChairs) => {
     const newTables = [];
 

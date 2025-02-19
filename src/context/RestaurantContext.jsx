@@ -7,7 +7,7 @@ export const RestaurantProvider = ({children}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedChairIndex, setSelectedChairIndex] = useState(null);
   const [selectedTableIndex, setSelectedTableIndex] = useState(null);
-  const [chairName, setChairName] = useState(null | '');
+  const [chairName, setChairName] = useState(null);
   const [hasSavedTables, setHasSavedTables] = useState(false);
 
 

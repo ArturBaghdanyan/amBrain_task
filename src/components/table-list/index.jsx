@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import {handleDragOver, handleDragStart, handleDrop} from "../../DnD/dnd";
 import {Buttons} from "./buttons";
 import {RestaurantContext} from "../../context/RestaurantContext";
-import {Link} from "react-router-dom";
 
 const TableList = () => {
   const {
@@ -137,7 +136,6 @@ const TableList = () => {
         chairName={chairName}
       />
 
-      <Link to='/'>Come back initial page</Link>
     </>
   );
 };
