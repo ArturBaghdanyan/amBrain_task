@@ -20,26 +20,12 @@ export const Buttons = () => {
   const addNewChairs = (numChairs) => {
     if (addItem.length === 0) return;
 
-    const hasNamedChair = addItem.some(table =>
-      table.chairs.some(chair => chair.name.trim() !== "")
-    );
+    const lastTable = addItem[addItem.length - 1];
+    const hasNamedChair = lastTable.chairs.some(chair => chair.name.trim() !== "");
 
     if (hasNamedChair) {
       console.warn("Cannot change the number of chairs because a chair has a name.");
-
-      const updatedTables = addItem.map(table => {
-        let updatedChairs = [...table.chairs];
-
-        if (numChairs > updatedChairs.length) {
-          for (let i = updatedChairs.length; i < numChairs; i++) {
-            updatedChairs.push({ id: uuidv4(), name: "" });
-          }
-        }
-        return { ...table, chairs: updatedChairs };
-      });
-
-      setAddItem(updatedTables);
-      localStorage.setItem("savedTables", JSON.stringify(updatedTables));
+      return;
     } else {
       const updatedTables = addItem.map(table => {
         let updatedChairs = [...table.chairs];
@@ -59,6 +45,7 @@ export const Buttons = () => {
       localStorage.setItem("savedTables", JSON.stringify(updatedTables));
     }
   };
+
 
   const addNewTables = (numTables, numChairs) => {
     const newTables = [];

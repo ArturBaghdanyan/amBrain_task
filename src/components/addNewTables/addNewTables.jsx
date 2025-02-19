@@ -8,24 +8,23 @@ export const AddNewTables = ({addItem, addNewTables, setShowModal}) => {
     e.preventDefault();
 
     if (numTables > 0) {
-      const existingChairCount = addItem.length > 0 ? addItem[0].chairs.length : null;
+      const existingChairCount = addItem.length > 0 ? addItem[0].chairs.length : '';
       addNewTables(parseInt(numTables), existingChairCount);
       setShowModal(false);
     }
   };
-
-  function numbers(e) {
-    const value = parseInt(e.target.value, 10)
-    setNumTables(value > 0 ? value : '')
-  }
 
   return (
     <form className={style.form}>
       <div className={style.form_input}>
         <input
           type="number"
+          min="0"
           value={numTables}
-          onChange={numbers}
+          onChange={(e) => {
+            const value = parseInt(e.target.value, 10)
+            setNumTables(value > 0 ? value : '')
+          }}
         />
       </div>
       <button onClick={addItems}>Add table</button>

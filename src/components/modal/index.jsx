@@ -21,6 +21,7 @@ const Modal = () => {
         <input
           type="number"
           value={numTables}
+          min="0"
           onChange={(e) => {
             const value = parseInt(e.target.value, 10)
             setNumTables(value > 0 ? value : '')
@@ -29,6 +30,7 @@ const Modal = () => {
         <input
           type="number"
           value={numChairs}
+          min="0"
           onChange={(e) => {
             const value = parseInt(e.target.value, 10)
             setNumChairs(value > 0 ? value : '')
