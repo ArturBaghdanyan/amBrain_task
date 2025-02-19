@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import style from "./style.module.scss"
 export const EditItemModal = ({
                                 isModalVisible,
@@ -11,6 +11,13 @@ export const EditItemModal = ({
                                 chairName,
                               }) => {
   const [name, setName] = useState(chairName);
+
+
+
+  useEffect(() => {
+    setName(chairName);
+
+  }, [isModalVisible, chairName]);
 
   const onCloseModal = () => {
     setIsModalVisible(false);
@@ -40,7 +47,6 @@ export const EditItemModal = ({
     } else {
       console.error('Selected chair not found');
     }
-
   };
 
   const handleSubmit = (e) => {

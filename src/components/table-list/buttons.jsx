@@ -16,21 +16,48 @@ export const Buttons = ({addItem, setAddItem}) => {
   }
 
   const addNewChairs = (numChairs) => {
-    if (addItem.length === 0) return;  // No tables to update
+    if (addItem.length === 0) return;
 
-    const existingChairCount = addItem[0].chairs.length;
+    const hasNamedChair = addItem.some(table =>
+      table.chairs.some(chair => chair.name.trim() !== "")
+    );
 
-    const updatedTables = addItem.map(table => {
-      let updatedChairs = [...table.chairs]
+    if (hasNamedChair) {
+      console.warn("Cannot change the number of chairs because a chair has a name.");
 
-      for (let i = existingChairCount; i < numChairs; i++) {
-        updatedChairs.push({ id: uuidv4(), name: "" });
-      }
-      return {...table, chairs: updatedChairs}
-    })
-    setAddItem(updatedTables)
-    localStorage.setItem("savedTables", JSON.stringify(updatedTables));
-  }
+      const updatedTables = addItem.map(table => {
+        let updatedChairs = [...table.chairs];
+
+        if (numChairs > updatedChairs.length) {
+          for (let i = updatedChairs.length; i < numChairs; i++) {
+            updatedChairs.push({ id: uuidv4(), name: "" });
+          }
+        }
+        return { ...table, chairs: updatedChairs };
+      });
+
+      setAddItem(updatedTables);
+      localStorage.setItem("savedTables", JSON.stringify(updatedTables));
+    } else {
+      const updatedTables = addItem.map(table => {
+        let updatedChairs = [...table.chairs];
+
+        if (numChairs > updatedChairs.length) {
+          for (let i = updatedChairs.length; i < numChairs; i++) {
+            updatedChairs.push({ id: uuidv4(), name: "" });
+          }
+        } else if (numChairs < updatedChairs.length) {
+          updatedChairs = updatedChairs.slice(0, numChairs);
+        }
+
+        return { ...table, chairs: updatedChairs };
+      });
+
+      setAddItem(updatedTables);
+      localStorage.setItem("savedTables", JSON.stringify(updatedTables));
+    }
+  };
+
 
   const addNewTables = (numTables, numChairs) => {
     const newTables = [];

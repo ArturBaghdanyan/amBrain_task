@@ -1,12 +1,35 @@
 import style from "../../repeated.module.scss";
 import {useState} from "react";
 
-export const UpdateChair = ({setShowModal, addNewChairs}) => {
+export const UpdateChair = ({addItem, setShowModal, addNewChairs}) => {
   const [numChairs, setNumChairs] = useState("");
 
   function updateItems(e) {
     e.preventDefault();
     addNewChairs(parseInt(numChairs))
+    setShowModal(false)
+  }
+
+  // function updateItems(e) {
+  //   // e.preventDefault();
+  //   // if (!addItem.length) {
+  //   //   console.error("No tables exist.");
+  //   //   return;
+  //   // }
+  //   //
+  //   // const existingChairCount = addItem[0]?.chairs?.length || 0;
+  //   //
+  //   // if (parseInt(numChairs) > existingChairCount) {
+  //   //   addNewChairs(parseInt(numChairs), existingChairCount);
+  //   // }
+  //   // setShowModal(false)
+  //
+  //
+  // }
+
+  function numbers(e) {
+    const value = parseInt(e.target.value, 10)
+    setNumChairs(value > 0 ? value : '')
   }
 
   return (
@@ -15,7 +38,7 @@ export const UpdateChair = ({setShowModal, addNewChairs}) => {
         <input
           type="number"
           value={numChairs}
-          onChange={(e) => setNumChairs(e.target.value)}
+          onChange={numbers}
         />
       </div>
       <button onClick={updateItems}>Update Chair</button>

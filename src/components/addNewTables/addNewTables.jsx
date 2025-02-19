@@ -14,13 +14,18 @@ export const AddNewTables = ({addItem, addNewTables, setShowModal}) => {
     }
   };
 
+  function numbers(e) {
+    const value = parseInt(e.target.value, 10)
+    setNumTables(value > 0 ? value : '')
+  }
+
   return (
     <form className={style.form}>
       <div className={style.form_input}>
         <input
           type="number"
           value={numTables}
-          onChange={(e) => setNumTables(e.target.value)}
+          onChange={numbers}
         />
       </div>
       <button onClick={addItems}>Add table</button>
