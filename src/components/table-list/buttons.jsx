@@ -49,21 +49,15 @@ export const Buttons = () => {
   };
 
   const addNewTables = (numTables, numChairs) => {
-    const newTables = [];
+    const newTables = Array.from({ length: numTables }, () => ({
+      chairs: Array.from({ length: numChairs }, () => ({ id: uuidv4(), name: "" }))
+    }));
 
-    for (let i = 0; i < numTables; i++) {
-      let table = { chairs: [] };
-
-      for (let j = 0; j < numChairs; j++) {
-        table.chairs.push({ id: uuidv4(), name: "" });
-      }
-
-      newTables.push(table);
-    }
-
-    const updatedTables = [...addItem, ...newTables];
-    setAddItem(updatedTables);
-    localStorage.setItem('savedTables', JSON.stringify(updatedTables));
+    setAddItem(prevTables => {
+      const updatedTables = [...prevTables, ...newTables];
+      localStorage.setItem('savedTables', JSON.stringify(updatedTables));
+      return updatedTables;
+    });
   };
 
   return (
