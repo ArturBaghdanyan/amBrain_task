@@ -1,5 +1,6 @@
-import {useState} from 'react';
-import styles from '../../repeated.module.scss';
+import { useState } from 'react';
+
+import styles from '../../assets/repeated.module.scss';
 
 const Modal = () => {
   const [numTables, setNumTables] = useState("");

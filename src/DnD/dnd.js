@@ -1,4 +1,4 @@
-export const handleDragStart = (event, tableIndex, chairIndex) => {
+export const handleDragStart = ( event, tableIndex, chairIndex ) => {
   event.dataTransfer.setData("tableIndex", tableIndex);
   event.dataTransfer.setData("chairIndex", chairIndex);
 };
@@ -7,7 +7,7 @@ export const handleDragOver = (event) => {
   event.preventDefault();
 };
 
-export const handleDrop = ({addItem, setAddItem}, event, targetTableIndex, targetChairIndex) => {
+export const handleDrop = ( { addItem, setAddItem }, event, targetTableIndex, targetChairIndex ) => {
   event.preventDefault();
 
   const sourceTableIndex = parseInt(event.dataTransfer.getData("tableIndex"));

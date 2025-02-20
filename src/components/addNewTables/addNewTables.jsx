@@ -1,17 +1,18 @@
-import style from "../../repeated.module.scss";
-import {useState} from "react";
+import { useState } from "react";
+import style from "../../assets/repeated.module.scss";
 
-export const AddNewTables = ({addItem, addNewTables, setShowModal}) => {
+export const AddNewTables = ({ addItem, addNewTables, setShowModal }) => {
   const [numTables, setNumTables] = useState("");
 
   const addItems = (e) => {
     e.preventDefault();
 
+    const existingChairCount = addItem.length > 0
+      ? addItem[0].chairs.length : '';
     if (numTables > 0) {
-      const existingChairCount = addItem.length > 0 ? addItem[0].chairs.length : '';
       addNewTables(parseInt(numTables), existingChairCount);
-      setShowModal(false);
     }
+    setShowModal(false);
   };
 
   return (

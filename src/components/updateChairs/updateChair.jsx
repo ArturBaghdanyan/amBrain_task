@@ -1,7 +1,8 @@
-import style from "../../repeated.module.scss";
-import {useState} from "react";
+import { useState } from "react";
 
-export const UpdateChair = ({setShowModal, addNewChairs}) => {
+import style from "../../assets/repeated.module.scss";
+
+export const UpdateChair = ({ setShowModal, addNewChairs }) => {
   const [numChairs, setNumChairs] = useState("");
 
   function updateItems(e) {

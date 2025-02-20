@@ -1,10 +1,11 @@
-import {useContext, useEffect} from "react";
-import style from "./style.module.scss";
-import {EditItemModal} from "../edit-modal/editModal";
+import { useContext, useEffect } from "react";
+import { RestaurantContext } from "../../context/RestaurantContext";
 import { v4 as uuidv4 } from 'uuid';
-import {handleDragOver, handleDragStart, handleDrop} from "../../DnD/dnd";
-import {Buttons} from "./buttons";
-import {RestaurantContext} from "../../context/RestaurantContext";
+import { handleDragOver, handleDragStart, handleDrop } from "../../DnD/dnd";
+import { EditItemModal } from "../edit-modal/editModal";
+import { Buttons } from "./buttons";
+
+import style from "./style.module.scss";
 
 const TableList = () => {
   const {

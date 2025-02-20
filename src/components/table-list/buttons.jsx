@@ -1,9 +1,10 @@
-import style from "./style.module.scss";
-import {AddNewTables} from "../addNewTables/addNewTables";
-import {useContext, useState} from "react";
+import { useContext, useState } from "react";
+import { RestaurantContext } from "../../context/RestaurantContext";
 import { v4 as uuidv4 } from 'uuid';
-import {UpdateChair} from "../updateChairs/updateChair";
-import {RestaurantContext} from "../../context/RestaurantContext";
+import { AddNewTables } from "../addNewTables/addNewTables";
+import { UpdateChair } from "../updateChairs/updateChair";
+
+import style from "./style.module.scss";
 
 export const Buttons = () => {
   const { addItem, setAddItem } = useContext(RestaurantContext);

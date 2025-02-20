@@ -1,6 +1,7 @@
-import {useContext, useEffect, useState} from 'react';
+import { useContext, useEffect } from 'react';
+import { RestaurantContext } from "../../context/RestaurantContext";
+
 import style from "./style.module.scss"
-import {RestaurantContext} from "../../context/RestaurantContext";
 
 export const EditItemModal = () => {
   const {
@@ -11,40 +12,26 @@ export const EditItemModal = () => {
     selectedChairIndex,
     addItem,
     setAddItem,
-    chairName
+    chairName,
+    setChairName
   } = useContext(RestaurantContext);
 
-  const [name, setName] = useState(chairName);
-
-
   useEffect(() => {
-    setName(chairName);
-  }, [isModalVisible, chairName]);
+    setChairName(chairName)
+  }, [ isModalVisible, chairName ]);
 
   const onCloseModal = () => {
     setIsModalVisible(false);
-    setSelectedChairIndex(null);
+    setSelectedChairIndex('');
   };
 
   const onChangeChairName = (newName) => {
-    const updatedTables = [...addItem];
-    const selectedChair = updatedTables[selectedTableIndex].chairs[selectedChairIndex];
-
-    if (selectedChair) {
-      setAddItem((prevData) =>
-        prevData.map((table, tableIndex) =>
-          tableIndex === selectedTableIndex
-            ? {
-              ...table,
-              chairs: table.chairs.map((chair, chairIndex) =>
-                chairIndex === selectedChairIndex
-                  ? { ...chair, name: newName }
-                  : chair
-              ),
-            }
-            : table
-        )
-      );
+    if (addItem[selectedTableIndex]?.chairs[selectedChairIndex]) {
+      setAddItem((prevData) => {
+        const updatedTables = [...prevData];  // Clone the previous data
+        updatedTables[selectedTableIndex].chairs[selectedChairIndex].name = newName;
+        return updatedTables;
+      });
     } else {
       console.error('Selected chair not found');
     }
@@ -52,20 +39,20 @@ export const EditItemModal = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onChangeChairName(name);
+    onChangeChairName(chairName);
     onCloseModal();
   };
 
   return (
     isModalVisible && (
-      <div style={{ width: '300px', margin: '0 auto', marginTop: '50px' }}>
-        <form onSubmit={handleSubmit} className={style.changeItem}>
+      <div className={style.change}>
+        <form onSubmit={handleSubmit} className={style.change_item}>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={chairName}
+            onChange={(e) => setChairName(e.target.value)}
           />
-          <div className={style.changeItem_button}>
+          <div className={style.change_item_button}>
             <button type="submit">Add item</button>
             <button type="button" onClick={onCloseModal}>
               Close
