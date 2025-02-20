@@ -28,8 +28,9 @@ export const EditItemModal = () => {
   const onChangeChairName = (newName) => {
     if (addItem[selectedTableIndex]?.chairs[selectedChairIndex]) {
       setAddItem((prevData) => {
-        const updatedTables = [...prevData];  // Clone the previous data
+        const updatedTables = [...prevData];
         updatedTables[selectedTableIndex].chairs[selectedChairIndex].name = newName;
+
         return updatedTables;
       });
     } else {

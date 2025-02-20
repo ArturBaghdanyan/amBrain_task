@@ -1,13 +1,14 @@
 import { useState } from "react";
 
 import style from "../../assets/repeated.module.scss";
+import {onChangeNumChairs} from "../../heplers/changeInput";
 
 export const UpdateChair = ({ setShowModal, addNewChairs }) => {
-  const [numChairs, setNumChairs] = useState("");
+  const [numChairs, setNumChairs] = useState(0);
 
   function updateItems(e) {
     e.preventDefault();
-    addNewChairs(parseInt(numChairs))
+    addNewChairs(numChairs)
     setShowModal(false)
   }
 
@@ -18,10 +19,7 @@ export const UpdateChair = ({ setShowModal, addNewChairs }) => {
           type="number"
           value={numChairs}
           min="0"
-          onChange={(e) => {
-            const value = parseInt(e.target.value, 10)
-            setNumChairs(value >= 0 ? value : '')
-          }}
+          onChange={(e) => onChangeNumChairs(e, { setNumChairs })}
         />
       </div>
       <button onClick={updateItems}>Update Chair</button>

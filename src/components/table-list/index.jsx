@@ -46,6 +46,7 @@ const TableList = () => {
 
     const rawItems = localStorage.getItem("restaurantKeys");
     setAddItem(rawItems ? JSON.parse(rawItems) : []);
+
     if (!rawItems) return;
 
     const { numTables, numChairs } = JSON.parse(rawItems);
@@ -54,6 +55,7 @@ const TableList = () => {
       setAddItem([]);
       return;
     }
+
     const tables = Array.from({ length: numTables }, () => ({
       chairs: Array.from({ length: numChairs }, () => ({ id: uuidv4(), name: "" })),
     }));
@@ -67,7 +69,7 @@ const TableList = () => {
   }, []);
 
   useEffect(() => {
-    if(addItem.length > 0) {
+    if(addItem.length) {
       localStorage.setItem('savedTables', JSON.stringify(addItem));
     }
   }, [addItem])

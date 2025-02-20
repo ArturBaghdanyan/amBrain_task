@@ -1,16 +1,17 @@
 import { useState } from "react";
 import style from "../../assets/repeated.module.scss";
+import {onChangeNumTables} from "../../heplers/changeInput";
 
 export const AddNewTables = ({ addItem, addNewTables, setShowModal }) => {
-  const [numTables, setNumTables] = useState("");
+  const [numTables, setNumTables] = useState(0);
 
   const addItems = (e) => {
     e.preventDefault();
 
-    const existingChairCount = addItem.length > 0
-      ? addItem[0].chairs.length : '';
+    const existingChairCount = addItem.length ? addItem[0].chairs.length : 0;
+
     if (numTables > 0) {
-      addNewTables(parseInt(numTables), existingChairCount);
+      addNewTables(numTables, existingChairCount);
     }
     setShowModal(false);
   };
@@ -22,10 +23,7 @@ export const AddNewTables = ({ addItem, addNewTables, setShowModal }) => {
           type="number"
           min="0"
           value={numTables}
-          onChange={(e) => {
-            const value = parseInt(e.target.value, 10)
-            setNumTables(value > 0 ? value : '')
-          }}
+          onChange={(e) => onChangeNumTables(e, { setNumTables })}
         />
       </div>
       <button onClick={addItems}>Add table</button>

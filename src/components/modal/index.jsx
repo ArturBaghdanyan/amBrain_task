@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import styles from '../../assets/repeated.module.scss';
+import {onChangeNumChairs, onChangeNumTables} from "../../heplers/changeInput";
 
 const Modal = () => {
   const [numTables, setNumTables] = useState("");
@@ -23,19 +24,13 @@ const Modal = () => {
           type="number"
           value={numTables}
           min="0"
-          onChange={(e) => {
-            const value = parseInt(e.target.value, 10)
-            setNumTables(value > 0 ? value : '')
-          }}
+          onChange={(e) => onChangeNumTables(e, { setNumTables })}
         />
         <input
           type="number"
           value={numChairs}
           min="0"
-          onChange={(e) => {
-            const value = parseInt(e.target.value, 10)
-            setNumChairs(value > 0 ? value : '')
-          }}
+          onChange={(e) => onChangeNumChairs(e, { setNumChairs })}
         />
       </div>
       <button onClick={createItems}>Create list</button>

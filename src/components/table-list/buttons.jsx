@@ -11,6 +11,7 @@ export const Buttons = () => {
 
   const [showTableModal, setShowTableModal] = useState(false)
   const [showChairModal, setShowChairModal] = useState(false)
+
   function onTableShow() {
     setShowTableModal(true)
   }
