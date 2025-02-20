@@ -28,7 +28,7 @@ export const EditItemModal = () => {
 
   const onChangeChairName = (newName) => {
     const updatedTables = [...addItem];
-    const selectedChair = updatedTables[selectedTableIndex]?.chairs[selectedChairIndex];
+    const selectedChair = updatedTables[selectedTableIndex].chairs[selectedChairIndex];
 
     if (selectedChair) {
       setAddItem((prevData) =>
@@ -45,7 +45,6 @@ export const EditItemModal = () => {
             : table
         )
       );
-      console.log(selectedChair);
     } else {
       console.error('Selected chair not found');
     }

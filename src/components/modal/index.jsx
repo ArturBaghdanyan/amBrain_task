@@ -10,8 +10,8 @@ const Modal = () => {
     const result = { numTables, numChairs };
     localStorage.setItem('restaurantKeys', JSON.stringify(result));
 
-    setNumTables(null);
-    setNumChairs(null);
+    setNumTables('');
+    setNumChairs('');
     window.open('/table-list', '_blank', 'noopener,noreferrer');
   };
 

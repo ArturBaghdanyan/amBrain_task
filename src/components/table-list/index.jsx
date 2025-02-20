@@ -23,7 +23,7 @@ const TableList = () => {
   const onShowModal = (tableIndex, chairIndex) => {
     setSelectedTableIndex(tableIndex);
     setSelectedChairIndex(chairIndex);
-    const selectedChair = addItem[tableIndex].chairs[chairIndex];
+    const selectedChair = addItem[tableIndex]?.chairs[chairIndex] || {};
     setChairName(selectedChair.name || "");
     setIsModalVisible(true);
   };
@@ -42,11 +42,11 @@ const TableList = () => {
       setAddItem(JSON.parse(savedTables));
       return;
     }
+
     const rawItems = localStorage.getItem("restaurantKeys");
-    if (!rawItems) {
-      setAddItem([]);
-      return;
-    }
+    setAddItem(rawItems ? JSON.parse(rawItems) : []);
+    if (!rawItems) return;
+
     const { numTables, numChairs } = JSON.parse(rawItems);
 
     if (!numTables || !numChairs) {

@@ -1,24 +1,25 @@
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { RestaurantContext } from "./context/RestaurantContext";
 import Modal from "./components/modal";
 import TableList from "./components/table-list";
-import {useContext, useEffect} from "react";
-import {RestaurantContext} from "./context/RestaurantContext";
-import {useNavigate} from "react-router-dom";
 
 function App() {
-  const {hasSavedTables} = useContext(RestaurantContext)
   const navigate = useNavigate()
+
+  const { hasSavedTables } = useContext(RestaurantContext)
 
   useEffect(() => {
     if (hasSavedTables) {
       navigate("/table-list");
+
+      return
     }
-    else {
-      navigate("/");
-    }
+
+    navigate("/")
   }, [hasSavedTables, navigate]);
 
   return hasSavedTables ? <TableList /> : <Modal />;
 }
 
 export default App;
-
